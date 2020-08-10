@@ -1,0 +1,10 @@
+#!/bin/bash
+
+#deleta os arquivos antigos
+if ls resultado_crawler_* 1> /dev/null 2>&1; then
+    rm resultado_crawler_*
+fi
+
+#inicio do processo de crawling 
+crawler=$(awk 'NR==6{print $3; exit}' ../app_config/CRAWLER_FORUM_001.INI)
+scrapy crawl $crawler
