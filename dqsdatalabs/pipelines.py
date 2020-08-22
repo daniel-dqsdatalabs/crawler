@@ -29,10 +29,15 @@ class CrawlerPipeline(object):
 		self.file.write(b',')
 		return item
 
-
 	def close_spider(self, spider):
-		if os.stat(setting.get('JSON_FILE')).st_size != 0: self.file.write(b']}')
+		if os.stat(setting.get('JSON_FILE')).st_size != 0: 
+			# removes the last comma to avoid json mismatch erros
+			self.file.seek(-2, os.SEEK_END) # go back 2 characters: \n and ,
+			self.file.truncate()
+			# end of json
+			self.file.write(b']}')
 		self.file.close()
-		#AzDataLake().send_to_datalake()
+		AzDataLake().send_to_datalake()
+
       
       
